@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>视频播放</title>
+  <style>
+    body { text-align: center; background: #000; color: #fff; }
+    video { width: 80%; max-width: 800px; margin-top: 50px; }
+  </style>
+</head>
+<body>
+  <h2>正在播放视频</h2>
+  <video controls id="videoPlayer">
+    您的浏览器不支持 video 标签。
+  </video>
+   <br>
+  <button onclick="goFullscreen()">全屏播放</button>
+  <script>
+    // 解析 URL 查询参数
+    function getQueryParam(param) {
+      var urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+    var videoType = getQueryParam('video');
+
+    // 根据参数选择视频文件（这里假设视频文件放在 videos 文件夹下）
+    var videoSources = {
+      game: "video/game.mp4",
+      horror: "video/horror.mp4",
+      symphony: "video/symphony.mp4",
+      adventure: "video/adventure.mp4"
+    };
+
+    // 获取视频播放器，并设置视频源
+    var videoPlayer = document.getElementById("videoPlayer");
+    if(videoType && videoSources[videoType]) {
+      videoPlayer.src = videoSources[videoType];
+    } else {
+      videoPlayer.outerHTML = "<p>无法找到对应的视频资源。</p>";
+    }
+
+     // 全屏播放函数
+    function goFullscreen() {
+      if (videoPlayer.requestFullscreen) {
+        videoPlayer.requestFullscreen();
+      } else if (videoPlayer.mozRequestFullScreen) { // Firefox
+        videoPlayer.mozRequestFullScreen();
+      } else if (videoPlayer.webkitRequestFullscreen) { // Chrome, Safari 和 Opera
+        videoPlayer.webkitRequestFullscreen();
+      } else if (videoPlayer.msRequestFullscreen) { // IE/Edge
+        videoPlayer.msRequestFullscreen();
+      }
+    }
+  </script>
+</body>
+</html>
